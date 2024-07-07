@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Ability Part B - English</title>
+    <link rel="stylesheet" href="style.csss.css">
+    <link rel="shortcut icon" href="android-chrome-192x192.png" type="image/x-icon">
+    <style>
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .score {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="timer" class="timer">Time left: 1 Hour</div>
+<h1>Multiple Choice Quiz</h1>
+
+<div id="quiz">
+    <!-- Questions will be inserted here by JavaScript -->
+</div>
+
+<button onclick="checkAnswers()">Check Answers</button>
+
+<div id="score" class="score" style="display: none;"></div>
+
+
+
+<div id="feedback" class="feedback" style="display: none;">
+    <!-- Incorrect answers feedback will be inserted here -->
+</div>
+
+<script>
+     document.addEventListener('copy', function(event) {
+    event.preventDefault();
+    alert('Copying is not allowed on this page.!');
+});
+document.addEventListener('selectstart', function(event) {
+    if (event.target.nodeName === 'BODY') {
+        event.preventDefault();
+        alert('You are trying to copy something!');
+    }
+});
+document.addEventListener('touchcopy', function(event) {
+    event.preventDefault();
+    alert('You are trying to copy something!');
+});
+document.addEventListener('contextmenu', function(e) {
+            alert('Developers are not allowed to see this inspect/source code. Sorry!');
+            e.preventDefault();
+        });
+
+        // Disable F12 key (Inspect Element shortcut)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+                alert('Developers are not allowed to see this inspect/source code. Sorry!');
+                e.preventDefault();
+            }
+        });
+    const quiz = [
+  {
+    question: "What is the synonym of 'Happy'?",
+    options: ["Sad", "Joyful", "Angry", "Tired"],
+    answer: "Joyful"
+  },
+  {
+    question: "What is the antonym of 'Cold'?",
+    options: ["Hot", "Warm", "Chilly", "Freezing"],
+    answer: "Hot"
+  },
+  {
+    question: "Which word is a noun?",
+    options: ["Run", "Happy", "Table", "Quickly"],
+    answer: "Table"
+  },
+  {
+    question: "Which of the following is a verb?",
+    options: ["Run", "Beautiful", "Happiness", "Red"],
+    answer: "Run"
+  },
+  {
+    question: "What is the correct plural form of 'Child'?",
+    options: ["Childs", "Childes", "Children", "Childrens"],
+    answer: "Children"
+  },
+  {
+    question: "Choose the correct spelling:",
+    options: ["Recieve", "Receive", "Receeve", "Receve"],
+    answer: "Receive"
+  },
+  {
+    question: "What is the past tense of 'Go'?",
+    options: ["Goed", "Gone", "Went", "Going"],
+    answer: "Went"
+  },
+  {
+    question: "Which word is an adjective?",
+    options: ["Happiness", "Quickly", "Beautiful", "Run"],
+    answer: "Beautiful"
+  },
+  {
+    question: "Which of the following is a pronoun?",
+    options: ["He", "Run", "Beautiful", "Quickly"],
+    answer: "He"
+  },
+  {
+    question: "What is the opposite of 'Fast'?",
+    options: ["Quick", "Slow", "Rapid", "Swift"],
+    answer: "Slow"
+  },
+  {
+    question: "Choose the correct word to complete the sentence: 'She is _____ intelligent.'",
+    options: ["a", "an", "the", "none"],
+    answer: "an"
+  },
+  {
+    question: "What is the correct form of the verb in the sentence: 'She _____ to school every day.'",
+    options: ["go", "goes", "going", "gone"],
+    answer: "goes"
+  },
+  {
+    question: "Which word is a conjunction?",
+    options: ["And", "Quickly", "Happiness", "Beautiful"],
+    answer: "And"
+  },
+  {
+    question: "What is the correct order of words in the sentence: '_____ are you going?'",
+    options: ["Where", "How", "What", "Who"],
+    answer: "Where"
+  },
+  {
+    question: "What is the correct synonym for 'Big'?",
+    options: ["Small", "Tiny", "Huge", "Little"],
+    answer: "Huge"
+  },
+  {
+    question: "Choose the correct article: 'She bought _____ apple from the market.'",
+    options: ["a", "an", "the", "none"],
+    answer: "an"
+  },
+  {
+    question: "What is the correct plural form of 'Mouse'?",
+    options: ["Mouses", "Mousees", "Mice", "Mices"],
+    answer: "Mice"
+  },
+  {
+    question: "What is the correct antonym of 'Weak'?",
+    options: ["Strong", "Thin", "Happy", "Tired"],
+    answer: "Strong"
+  },
+  {
+    question: "Choose the correct spelling:",
+    options: ["Definately", "Definitely", "Definately", "Definetely"],
+    answer: "Definitely"
+  },
+  {
+    question: "What is the past tense of 'Eat'?",
+    options: ["Eat", "Eats", "Eaten", "Ate"],
+    answer: "Ate"
+  },
+  {
+    question: "Which word is an adverb?",
+    options: ["Quickly", "Beautiful", "Happiness", "Run"],
+    answer: "Quickly"
+  },
+  {
+    question: "What is the correct pronoun for 'John and I'?",
+    options: ["We", "They", "Us", "Them"],
+    answer: "We"
+  },
+  {
+    question: "What is the opposite of 'Happy'?",
+    options: ["Sad", "Joyful", "Angry", "Excited"],
+    answer: "Sad"
+  },
+  {
+    question: "Choose the correct word to complete the sentence: 'She is _____ teacher.'",
+    options: ["a", "an", "the", "none"],
+    answer: "a"
+  },
+  {
+    question: "What is the correct form of the verb in the sentence: 'They _____ to the park every Sunday.'",
+    options: ["go", "goes", "going", "gone"],
+    answer: "go"
+  },
+  {
+    question: "Which word is a preposition?",
+    options: ["On", "Quickly", "Happiness", "Beautiful"],
+    answer: "On"
+  },
+  {
+    question: "What is the correct order of words in the sentence: '_____ did you do that?'",
+    options: ["Why", "How", "What", "Who"],
+    answer: "Why"
+  },
+  {
+    question: "What is the correct synonym for 'Small'?",
+    options: ["Big", "Huge", "Tiny", "Large"],
+    answer: "Tiny"
+  },
+  {
+    question: "Choose the correct article: 'He saw _____ elephant at the zoo.'",
+    options: ["a", "an", "the", "none"],
+    answer: "an"
+  },
+  {
+    question: "What is the correct plural form of 'Tooth'?",
+    options: ["Tooths", "Teeth", "Toothes", "Teethes"],
+    answer: "Teeth"
+  },
+  {
+    question: "What is the correct antonym of 'Brave'?",
+    options: ["Cowardly", "Strong", "Happy", "Sad"],
+    answer: "Cowardly"
+  },
+  {
+    question: "Choose the correct spelling:",
+    options: ["Accomodate", "Accommodate", "Acommodate", "Acommodete"],
+    answer: "Accommodate"
+  },
+  {
+    question: "What is the past tense of 'See'?",
+    options: ["See", "Sees", "Saw", "Seen"],
+    answer: "Saw"
+  },
+  {
+    question: "Which word is a conjunction?",
+    options: ["But", "Quickly", "Happiness", "Beautiful"],
+    answer: "But"
+  },
+  {
+    question: "What is the correct pronoun for 'Jane and Lisa'?",
+    options: ["They", "We", "Us", "Them"],
+    answer: "They"
+  },
+  {
+    question: "What is the opposite of 'Rich'?",
+    options: ["Poor", "Wealthy", "Happy", "Excited"],
+    answer: "Poor"
+  },
+  {
+    question: "Choose the correct word to complete the sentence: 'He is _____ doctor.'",
+    options: ["a", "an", "the", "none"],
+    answer: "a"
+  },
+  {
+    question: "What is the correct form of the verb in the sentence: 'She _____ at the library every day.'",
+    options: ["study", "studies", "studying", "studied"],
+    answer: "studies"
+  },
+  {
+    question: "Which word is a preposition?",
+    options: ["Under", "Quickly", "Happiness", "Beautiful"],
+    answer: "Under"
+  },
+  {
+    question: "What is the correct order of words in the sentence: '_____ are you doing?'",
+    options: ["What", "How", "Why", "Who"],
+    answer: "What"
+  },
+  {
+    question: "What is the correct synonym for 'Quick'?",
+    options: ["Fast", "Slow", "Big", "Large"],
+    answer: "Fast"
+  },
+  {
+    question: "Choose the correct article: 'They found _____ lost puppy.'",
+    options: ["a", "an", "the", "none"],
+    answer: "the"
+  },
+  {
+    question: "What is the correct plural form of 'Man'?",
+    options: ["Mans", "Men", "Manses", "Menses"],
+    answer: "Men"
+  },
+  {
+    question: "What is the correct antonym of 'Young'?",
+    options: ["Old", "Strong", "Happy", "Sad"],
+    answer: "Old"
+  },
+  {
+    question: "Choose the correct spelling:",
+    options: ["Neccessary", "Necessary", "Necesary", "Nessesary"],
+    answer: "Necessary"
+  },
+  {
+    question: "What is the past tense of 'Write'?",
+    options: ["Write", "Writes", "Written", "Wrote"],
+    answer: "Wrote"
+  },
+  {
+    question: "Which word is a conjunction?",
+    options: ["Or", "Quickly", "Happiness", "Beautiful"],
+    answer: "Or"
+  },
+  {
+    question: "What is the correct pronoun for 'Tom and Jerry'?",
+    options: ["They", "We", "Us", "Them"],
+    answer: "They"
+  },
+  {
+    question: "What is the opposite of 'Hot'?",
+    options: ["Cold", "Warm", "Happy", "Excited"],
+    answer: "Cold"
+  },
+  {
+    question: "Choose the correct word to complete the sentence: 'This is _____ best day ever.'",
+    options: ["a", "an", "the", "none"],
+    answer: "the"
+  }
+];
+
+// Function to display the quiz
+function displayQuiz() {
+  const quizContainer = document.getElementById("quiz-container");
+  quiz.forEach((q, index) => {
+    const questionElem = document.createElement("div");
+    questionElem.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+    q.options.forEach(option => {
+      const optionElem = document.createElement("label");
+      optionElem.innerHTML = `<input type="radio" name="question${index}" value="${option}"> ${option}<br>`;
+      questionElem.appendChild(optionElem);
+    });
+    quizContainer.appendChild(questionElem);
+  });
+}
+
+// Function to check answers
+function checkAnswers() {
+  let score = 0;
+  quiz.forEach((q, index) => {
+    const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+    if (selectedOption && selectedOption.value === q.answer) {
+      score++;
+    }
+  });
+  alert(`Your score is ${score} out of ${quiz.length}`);
+}
+
+// Display the quiz on page load
+window.onload = function() {
+  displayQuiz();
+};

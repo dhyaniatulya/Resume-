@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Ability Part B - English</title>
+    <link rel="stylesheet" href="style.csss.css">
+    <link rel="shortcut icon" href="android-chrome-192x192.png" type="image/x-icon">
+    <style>
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .score {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="timer" class="timer">Time left: 1 Hour</div>
+<h1>Multiple Choice Quiz</h1>
+
+<div id="quiz">
+    <!-- Questions will be inserted here by JavaScript -->
+</div>
+
+<button onclick="checkAnswers()">Check Answers</button>
+
+<div id="score" class="score" style="display: none;"></div>
+
+
+
+<div id="feedback" class="feedback" style="display: none;">
+    <!-- Incorrect answers feedback will be inserted here -->
+</div>
+
+<script>
+     document.addEventListener('copy', function(event) {
+    event.preventDefault();
+    alert('Copying is not allowed on this page.!');
+});
+document.addEventListener('selectstart', function(event) {
+    if (event.target.nodeName === 'BODY') {
+        event.preventDefault();
+        alert('You are trying to copy something!');
+    }
+});
+document.addEventListener('touchcopy', function(event) {
+    event.preventDefault();
+    alert('You are trying to copy something!');
+});
+document.addEventListener('contextmenu', function(e) {
+            alert('Developers are not allowed to see this inspect/source code. Sorry!');
+            e.preventDefault();
+        });
+
+        // Disable F12 key (Inspect Element shortcut)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+                alert('Developers are not allowed to see this inspect/source code. Sorry!');
+                e.preventDefault();
+            }
+        });
+const questions = [
+{
+        question: "Who was the first President of India?",
+        options: ["Dr. Rajendra Prasad", "Dr. S. Radhakrishnan", "Indira Gandhi", "Lal Bahadur Shastri"],
+        correct: "Dr. Rajendra Prasad"
+    },
+    {
+        question: "What is the longest river in the world?",
+        options: ["Amazon", "Nile", "Ganges", "Yangtze"],
+        correct: "Nile"
+    },
+    {
+        question: "Which gas is most abundant in the Earth's atmosphere?",
+        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"],
+        correct: "Nitrogen"
+    },
+    {
+        question: "In which year did India gain independence?",
+        options: ["1945", "1947", "1950", "1952"],
+        correct: "1947"
+    },
+    {
+        question: "What is the smallest planet in our solar system?",
+        options: ["Mars", "Mercury", "Venus", "Pluto"],
+        correct: "Mercury"
+    },
+    // Add more unique questions up to 400
+
+    {
+        question: "Which of the following is the capital of Australia?",
+        options: ["Sydney", "Canberra", "Melbourne", "Brisbane"],
+        correct: "Canberra"
+    },
+    {
+        question: "Who wrote the national anthem of India?",
+        options: ["Rabindranath Tagore", "Bankim Chandra Chatterjee", "Sarojini Naidu", "Subhash Chandra Bose"],
+        correct: "Rabindranath Tagore"
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Earth", "Mars", "Jupiter", "Saturn"],
+        correct: "Mars"
+    },
+    {
+        question: "Who is known as the Father of Indian Constitution?",
+        options: ["Mahatma Gandhi", "Jawaharlal Nehru", "B. R. Ambedkar", "Sardar Patel"],
+        correct: "B. R. Ambedkar"
+    },
+    {
+        question: "What is the chemical symbol for water?",
+        options: ["H2O", "O2", "CO2", "H2"],
+        correct: "H2O"
+    },
+    {
+        question: "Which battle marked the beginning of the British rule in India?",
+        options: ["Battle of Panipat", "Battle of Plassey", "Battle of Buxar", "Battle of Haldighati"],
+        correct: "Battle of Plassey"
+    },
+    {
+        question: "Which Indian state has the longest coastline?",
+        options: ["Maharashtra", "Gujarat", "Tamil Nadu", "Kerala"],
+        correct: "Gujarat"
+    },
+    {
+        question: "Who invented the telephone?",
+        options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Guglielmo Marconi"],
+        correct: "Alexander Graham Bell"
+    },
+    {
+        question: "What is the currency of Japan?",
+        options: ["Yuan", "Yen", "Won", "Ringgit"],
+        correct: "Yen"
+    },
+    {
+        question: "Which element is represented by the symbol 'O'?",
+        options: ["Osmium", "Oxygen", "Gold", "Silver"],
+        correct: "Oxygen"
+    },
+    {
+    question: "Who was the first Prime Minister of India?",
+    options: ["Jawaharlal Nehru", "Indira Gandhi", "Sardar Vallabhbhai Patel", "Lal Bahadur Shastri"],
+    correct: "Jawaharlal Nehru"
+},
+{
+    question: "Which country is known as the Land of the Rising Sun?",
+    options: ["China", "Japan", "South Korea", "Vietnam"],
+    correct: "Japan"
+},
+{
+    question: "What is the chemical symbol for gold?",
+    options: ["Go", "Au", "Gd", "Ag"],
+    correct: "Au"
+},
+{
+    question: "Who discovered penicillin?",
+    options: ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Albert Einstein"],
+    correct: "Alexander Fleming"
+},
+{
+    question: "Which is the largest organ in the human body?",
+    options: ["Liver", "Lungs", "Skin", "Heart"],
+    correct: "Skin"
+},
+{
+    question: "Which gas is responsible for the greenhouse effect?",
+    options: ["Carbon Monoxide", "Nitrogen", "Oxygen", "Carbon Dioxide"],
+    correct: "Carbon Dioxide"
+},
+{
+    question: "Who wrote the famous novel 'To Kill a Mockingbird'?",
+    options: ["Harper Lee", "Mark Twain", "Charles Dickens", "Jane Austen"],
+    correct: "Harper Lee"
+},
+{
+    question: "What is the SI unit of force?",
+    options: ["Newton", "Watt", "Joule", "Volt"],
+    correct: "Newton"
+},
+{
+    question: "What is the chemical symbol for silver?",
+    options: ["Si", "Ag", "Sr", "Sn"],
+    correct: "Ag"
+},
+{
+    question: "Who developed the theory of relativity?",
+    options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+    correct: "Albert Einstein"
+},
+// Add more unique questions up to 500
+{
+    question: "What is the chemical symbol for iron?",
+    options: ["Fe", "Ir", "In", "Fr"],
+    correct: "Fe"
+},
+{
+    question: "Which planet is known as the 'Morning Star'?",
+    options: ["Mars", "Venus", "Jupiter", "Saturn"],
+    correct: "Venus"
+},
+{
+    question: "Who is known as the 'Father of Modern Physics'?",
+    options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Nikola Tesla"],
+    correct: "Albert Einstein"
+},
+{
+    question: "Which country is known as the 'Land of the Midnight Sun'?",
+    options: ["Norway", "Sweden", "Finland", "Iceland"],
+    correct: "Norway"
+},
+{
+    question: "What is the hardest natural substance on Earth?",
+    options: ["Diamond", "Graphite", "Steel", "Titanium"],
+    correct: "Diamond"
+},
+{
+    question: "Who invented the electric bulb?",
+    options: ["Thomas Edison", "Nikola Tesla", "Benjamin Franklin", "Alexander Graham Bell"],
+    correct: "Thomas Edison"
+},
+{
+    question: "Which is the largest mammal in the world?",
+    options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+    correct: "Blue Whale"
+},
+{
+    question: "What is the capital of Brazil?",
+    options: ["Rio de Janeiro", "Sao Paulo", "Brasilia", "Buenos Aires"],
+    correct: "Brasilia"
+},
+{
+    question: "Who discovered the theory of evolution?",
+    options: ["Isaac Newton", "Charles Darwin", "Albert Einstein", "Gregor Mendel"],
+    correct: "Charles Darwin"
+},
+{
+    question: "Which is the largest ocean in the world?",
+    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+    correct: "Pacific Ocean"
+},
+// Add more unique questions up to 100
+
+{
+    question: "Who is considered the father of the English language?",
+    options: ["William Shakespeare", "Geoffrey Chaucer", "John Milton", "Charles Dickens"],
+    correct: "Geoffrey Chaucer"
+},
+{
+    question: "What is the synonym of 'abhor'?",
+    options: ["Adore", "Despise", "Admire", "Detest"],
+    correct: "Detest"
+},
+{
+    question: "Identify the correct spelling:",
+    options: ["Accomodate", "Accommodate", "Acommodate", "Accomadate"],
+    correct: "Accommodate"
+},
+{
+    question: "What is the antonym of 'courageous'?",
+    options: ["Fearless", "Timid", "Brave", "Bold"],
+    correct: "Timid"
+},
+{
+    question: "Choose the correct form of the verb: 'She ___ (run) in the marathon last weekend.'",
+    options: ["Run", "Running", "Runs", "Ran"],
+    correct: "Ran"
+},
+// Add more questions as needed
+{
+    question: "'To kill two birds with one stone' is an example of which figure of speech?",
+    options: ["Simile", "Metaphor", "Idiom", "Hyperbole"],
+    correct: "Idiom"
+},
+{
+    question: "What is the plural form of 'child'?",
+    options: ["Childrens", "Childs", "Childes", "Children"],
+    correct: "Children"
+},
+{
+    question: "'The cat sat on the mat' is an example of which sentence type?",
+    options: ["Interrogative", "Imperative", "Exclamatory", "Declarative"],
+    correct: "Declarative"
+},
+{
+    question: "What part of speech is the word 'happily'?",
+    options: ["Adjective", "Noun", "Verb", "Adverb"],
+    correct: "Adverb"
+},
+{
+    question: "Choose the correct preposition: 'I am interested ___ music.'",
+    options: ["On", "At", "With", "In"],
+    correct: "In"
+},
+// Add more questions as needed
+{
+    question: "What is the superlative form of 'good'?",
+    options: ["Gooder", "Goodest", "Best", "Better"],
+    correct: "Best"
+},
+{
+    question: "'To err is human, to forgive divine' is an example of which literary device?",
+    options: ["Irony", "Metaphor", "Simile", "Aphorism"],
+    correct: "Aphorism"
+},
+{
+    question: "What is the plural form of 'goose'?",
+    options: ["Gooses", "Goos", "Geese", "Gees"],
+    correct: "Geese"
+},
+{
+    question: "'He sings very well.' Identify the adverb.",
+    options: ["Very", "Sings", "Well", "He"],
+    correct: "Very"
+},
+{
+    question: "Choose the correct conjunction: 'I would go for a walk ___ it's raining.'",
+    options: ["But", "And", "Because", "If"],
+    correct: "Because"
+},
+// Add more questions as needed
+{
+    question: "What is the past tense of 'teach'?",
+    options: ["Taught", "Teached", "Teached", "Tought"],
+    correct: "Taught"
+},
+{
+    question: "Identify the conjunction in the following sentence: 'He neither ate nor drank.'",
+    options: ["Neither", "Nor", "Ate", "He"],
+    correct: "Nor"
+},
+{
+    question: "Choose the correct article: '___ apple a day keeps the doctor away.'",
+    options: ["A", "An", "The", "No article needed"],
+    correct: "A"
+},
+{
+    question: "What does the idiom 'a piece of cake' mean?",
+    options: ["Something delicious", "Something difficult", "Something easy", "Something complicated"],
+    correct: "Something easy"
+},
+{
+    question: "'She is the ___ girl in the class.' Choose the correct adjective.",
+    options: ["More intelligent", "Intelligentest", "Most intelligent", "Intelligenter"],
+    correct: "Most intelligent"
+},
+// Add more questions as needed
+{
+    question: "What is the comparative form of 'far'?",
+    options: ["Farther", "More far", "Farest", "Farthermost"],
+    correct: "Farther"
+},
+{
+    question: "Identify the subject in the following sentence: 'The cat chased the mouse.'",
+    options: ["Chased", "Cat", "Mouse", "The"],
+    correct: "Cat"
+},
+{
+    question: "Choose the correct tense: 'She ___ (go) to the market every day.'",
+    options: ["Goes", "Go", "Going", "Went"],
+    correct: "Goes"
+},
+{
+    question: "What is the past participle of 'drink'?",
+    options: ["Drank", "Drunk", "Drinked", "Drunked"],
+    correct: "Drunk"
+},
+{
+    question: "Identify the adverb in the following sentence: 'He ran quickly.'",
+    options: ["Ran", "He", "Quickly", "The"],
+    correct: "Quickly"
+},
+{
+    question: "Choose the correct modal auxiliary verb: 'You ___ to complete the assignment by tomorrow.'",
+    options: ["Can", "Could", "Must", "Might"],
+    correct: "Must"
+},
+// Add more questions as needed
+{
+    question: "What is the opposite of 'positive'?",
+    options: ["Negative", "Neutral", "Optimistic", "Bright"],
+    correct: "Negative"
+},
+{
+    question: "'A rolling stone gathers no moss.' Identify the figure of speech.",
+    options: ["Simile", "Metaphor", "Idiom", "Personification"],
+    correct: "Idiom"
+},
+{
+    question: "Choose the correct preposition: 'She is afraid ___ spiders.'",
+    options: ["In", "Of", "On", "At"],
+    correct: "Of"
+},
+{
+    question: "What is the plural form of 'man'?",
+    options: ["Mans", "Manes", "Men", "Mens"],
+    correct: "Men"
+},
+{
+    question: "Identify the pronoun in the following sentence: 'She loves chocolate.'",
+    options: ["She", "Loves", "Chocolate", "The"],
+    correct: "She"
+},
+// Add more questions as needed
+{
+    question: "Choose the correct form of the verb: 'They ___ (sleep) when the phone rang.'",
+    options: ["Sleep", "Slept", "Sleeping", "Sleeps"],
+    correct: "Slept"
+},
+{
+    question: "What part of speech is the word 'quickly'?",
+    options: ["Adjective", "Noun", "Verb", "Adverb"],
+    correct: "Adverb"
+},
+{
+    question: "'Actions speak louder than words.' Identify the figure of speech.",
+    options: ["Simile", "Metaphor", "Proverb", "Aphorism"],
+    correct: "Proverb"
+},
+{
+    question: "What is the superlative form of 'bad'?",
+    options: ["Baddest", "Worst", "Badder", "Baddest"],
+    correct: "Worst"
+},
+{
+    question: "Choose the correct conjunction: 'She is tired ___ she will continue working.'",
+    options: ["But", "And", "Or", "Although"],
+    correct: "Although"
+},
+// Add more questions as needed
+{
+    question: "What is the past tense of 'eat'?",
+    options: ["Ate", "Eaten", "Eat", "Eated"],
+    correct: "Ate"
+},
+{
+    question: "Identify the interjection in the following sentence: 'Wow, that's amazing!'",
+    options: ["Wow", "That's", "Amazing", "The"],
+    correct: "Wow"
+},
+{
+    question: "Choose the correct article: '___ university offers scholarships to deserving students.'",
+    options: ["A", "An", "The", "No article needed"],
+    correct: "The"
+},
+{
+    question: "What does the idiom 'bite the bullet' mean?",
+    options: ["To make a difficult decision", "To face a difficult situation bravely", "To endure a painful situation", "To give up easily"],
+    correct: "To endure a painful situation"
+},
+{
+    question: "'He is the ___ person I know.' Choose the correct adjective.",
+    options: ["More intelligent", "Intelligentest", "Most intelligent", "Intelligenter"],
+    correct: "Most intelligent"
+},
+// Add more questions as needed
+{
+    question: "What is the comparative form of 'high'?",
+    options: ["Higher", "More high", "Highly", "Highiest"],
+    correct: "Higher"
+},
+{
+    question: "Identify the object in the following sentence: 'She baked a cake.'",
+    options: ["She", "Baked", "Cake", "A"],
+    correct: "Cake"
+},
+
+{
+        question: "What is the comparative form of 'big'?",
+        options: ["Bigger", "Biggest", "More big", "Biggier"],
+        correct: "Bigger"
+    },
+    {
+        question: "Identify the subject in the following sentence: 'The sun rises in the east.'",
+        options: ["Sun", "Rises", "East", "The"],
+        correct: "Sun"
+    },
+    {
+        question: "'He is as wise as an owl.' Identify the figure of speech.",
+        options: ["Simile", "Metaphor", "Personification", "Hyperbole"],
+        correct: "Simile"
+    },
+    {
+        question: "Choose the correct tense: 'She ___ (read) a book yesterday.'",
+        options: ["Reads", "Reading", "Read", "Ran"],
+        correct: "Read"
+    },
+    {
+        question: "What is the past participle of 'begin'?",
+        options: ["Beginned", "Began", "Begun", "Beginning"],
+        correct: "Begun"
+    },
+    // Add more questions as needed
+    {
+        question: "Identify the adverb in the following sentence: 'He speaks very softly.'",
+        options: ["Speaks", "Very", "Softly", "He"],
+        correct: "Very"
+    },
+    {
+        question: "Choose the correct modal auxiliary verb: 'Students ___ study hard to pass the exam.'",
+        options: ["Can", "May", "Must", "Should"],
+        correct: "Must"
+    },
+    {
+        question: "What is the opposite of 'beautiful'?",
+        options: ["Pretty", "Ugly", "Lovely", "Attractive"],
+        correct: "Ugly"
+    },
+    {
+        question: "'All the world's a stage.' Identify the figure of speech.",
+        options: ["Metaphor", "Simile", "Personification", "Hyperbole"],
+        correct: "Metaphor"
+    },
+    {
+        question: "Choose the correct preposition: 'The book is ___ the table.'",
+        options: ["On", "At", "In", "Under"],
+        correct: "On"
+    },
+    // Add more questions as needed
+    {
+        question: "What is the plural form of 'woman'?",
+        options: ["Womans", "Womans", "Women", "Womens"],
+        correct: "Women"
+    },
+    {
+        question: "Identify the pronoun in the following sentence: 'They won the game.'",
+        options: ["They", "Won", "Game", "The"],
+        correct: "They"
+    },
+    {
+        question: "Choose the correct form of the verb: 'The children ___ (play) in the park.'",
+        options: ["Play", "Played", "Plays", "Playing"],
+        correct: "Play"
+    },
+    {
+        question: "What part of speech is the word 'honestly'?",
+        options: ["Adjective", "Noun", "Verb", "Adverb"],
+        correct: "Adverb"
+    },
+    {
+        question: "What is the superlative form of 'far'?",
+        options: ["Farest", "Farther", "Furthest", "Furthermost"],
+        correct: "Furthest"
+    },
+    // Add more questions as needed
+    {
+        question: "Identify the conjunction in the following sentence: 'He will come if you call him.'",
+        options: ["He", "If", "Will", "You"],
+        correct: "If"
+    },
+    {
+        question: "Choose the correct article: '___ apple a day keeps the doctor away.'",
+        options: ["A", "An", "The", "No article needed"],
+        correct: "An"
+    },
+    {
+        question: "What does the idiom 'break the ice' mean?",
+        options: ["To make something difficult", "To end a conversation", "To start a conversation", "To solve a problem"],
+        correct: "To start a conversation"
+    },
+    {
+        question: "'She is the ___ girl in the class.' Choose the correct adjective.",
+        options: ["More intelligent", "Intelligentest", "Most intelligent", "Intelligenter"],
+        correct: "Most intelligent"
+    },
+    {
+        question: "What is the comparative form of 'long'?",
+        options: ["Longer", "Longest", "More long", "Longerest"],
+        correct: "Longer"
+    },
+    // Add more questions as needed
+    {
+        question: "Identify the object in the following sentence: 'She bought a new car.'",
+        options: ["She", "Bought", "New", "Car"],
+        correct: "Car"
+    },
+    {
+        question: "'Time flies when you're having fun.' Identify the figure of speech.",
+        options: ["Simile", "Metaphor", "Personification", "Hyperbole"],
+        correct: "Personification"
+    },
+];
+
+let timerInterval;
+let answersChecked = false;
+
+function loadQuiz() {
+    const quizDiv = document.getElementById('quiz');
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+        
+        const questionTitle = document.createElement('h3');
+        questionTitle.textContent = `Q${index + 1}: ${q.question}`;
+        questionDiv.appendChild(questionTitle);
+        
+        q.options.forEach((option, i) => {
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = `question${index}`;
+            input.value = option;
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(option));
+            questionDiv.appendChild(label);
+        });
+        
+        quizDiv.appendChild(questionDiv);
+    });
+}
+
+function checkAnswers() {
+    if (answersChecked) {
+        alert("You cannot change your answers after checking.");
+        return;
+    }
+
+    const missedQuestions = getMissedQuestions();
+    if (missedQuestions.length > 0) {
+        alert(`Please answer all questions before checking your answers. You missed questions: ${missedQuestions.join(", ")}`);
+        return;
+    }
+
+    clearInterval(timerInterval); // Stop the timer when checking answers
+
+    let score = 0;
+    const feedbackDiv = document.getElementById('feedback');
+    feedbackDiv.innerHTML = '';
+    
+    questions.forEach((q, index) => {
+        const options = document.getElementsByName(`question${index}`);
+        options.forEach((option) => {
+            if (option.checked) {
+                if (option.value === q.correct) {
+                    score++;
+                } else {
+                    const feedback = document.createElement('p');
+                    feedback.textContent = `Question ${index + 1} is incorrect. Correct answer is "${q.correct}".`;
+                    feedbackDiv.appendChild(feedback);
+                }
+            }
+        });
+    });
+
+    const scoreDiv = document.getElementById('score');
+    scoreDiv.textContent = `Your score is: ${score} out of ${questions.length}`;
+    scoreDiv.style.display = 'block';
+
+    if (score === questions.length) {
+        document.getElementById('redeem').style.display = 'block';
+    }
+    
+    feedbackDiv.style.display = 'block';
+    answersChecked = true;
+}
+
+function getMissedQuestions() {
+    let missedQuestions = [];
+    questions.forEach((q, index) => {
+        const options = document.getElementsByName(`question${index}`);
+        let answered = false;
+        options.forEach((option) => {
+            if (option.checked) {
+                answered = true;
+            }
+        });
+        if (!answered) {
+            missedQuestions.push(index + 1); // Adding 1 to match question numbering
+        }
+    });
+    return missedQuestions;
+}
+
+function startTimer(duration, display) {
+    let timer = duration, hours, minutes, seconds;
+    timerInterval = setInterval(() => {
+        hours = Math.floor(timer / 3600);
+        minutes = Math.floor((timer % 3600) / 60);
+        seconds = timer % 60;
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = `Time left: ${hours}:${minutes}:${seconds}`;
+
+        if (--timer < 0) {
+            clearInterval(timerInterval);
+            checkAnswers();
+        }
+    }, 1000);
+}
+
+function handleKeyDown(event) {
+    if (event.ctrlKey && event.key === 'c') {
+        alert("You do not cheat the answer!");
+        event.preventDefault();
+    }
+}
+
+// Load the quiz questions and start the timer
+window.onload = () => {
+    loadQuiz();
+    const oneHour = 60 * 60;
+    const display = document.getElementById('timer');
+    startTimer(oneHour, display);
+
+    document.addEventListener('keydown', handleKeyDown);
+};
+</script>
+
+</body>
+</html>

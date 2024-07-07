@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Chatbot</title>
+<link rel="stylesheet" href="ai.css">
+<marquee>Kindly ensure that your message is entered accurately with no spelling errors, as the AI may have difficulty understanding the question. Additionally, please use small capital letters (e.g., hello). Thank you! :)</marquee>
+<style>
+  /* Add your CSS styling here */
+  .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #282c34;
+      color: white;
+      font-family: Arial, sans-serif;
+  }
+  .chat-box {
+      width: 80%;
+      height: 70%;
+      overflow-y: auto;
+      overflow-wrap: break-word;
+      border: 1px solid #444;
+      padding: 10px;
+      margin: 10px 0;
+  }
+  .input-container {
+      display: flex;
+      width: 80%;
+      justify-content: space-between;
+  }
+  #user-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #444;
+  }
+  button {
+      padding: 10px;
+      margin-left: 10px;
+      border: none;
+      background-color: #61dafb;
+      cursor: pointer;
+      color: #282c34;
+      font-weight: bold;
+  }
+  .options-container {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+  }
+  .option-button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      background-color: #61dafb;
+      cursor: pointer;
+      color: #282c34;
+      font-weight: bold;
+      border-radius: 5px;
+  }
+  .bot, .user {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap; /* Ensure text wraps within the element */
+  }
+  .bot {
+      background-color: #444;
+  }
+  .user {
+      background-color: #61dafb;
+      color: #282c34;
+      text-align: right;
+  }
+  marquee {
+    margin-bottom: 20px;
+    color: red;
+    font-weight: bold;
+}
+.small-caps {
+            font-variant: small-caps;
+            text-transform: lowercase;
+        }
+        
+</style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="options-container">
+        <button class="option-button" onclick="handleOption(1)">How to clear NDA</button>
+        <button class="option-button" onclick="handleOption(2)">Give me tips for SSB interview</button>
+        <button class="option-button" onclick="handleOption(3)">Give me time table for my preparation</button>
+        <button class="option-button" onclick="handleOption(4)">Personal question</button>
+    </div>
+    <div class="chat-box" id="chat-box"></div>
+    <h6>AI can make mistakes. Check important info.</h6>
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<script>
+    
+   // Disable right-click context menu
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert('Developers are not allowed to see this inspect/source code.');
+});
+
+document.addEventListener('keydown', function(e) {
+    // Prevent opening of developer tools
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+        e.preventDefault();
+        alert('Developers are not allowed to see this inspect/source code. Sorry! 🚔');
+        // Ask if user is a developer
+        let isDeveloper = confirm('Are you a developer?');
+        if (isDeveloper) {
+            let password = prompt('Enter the password to access developer tools:');
+            if (password === '69692626') {
+                alert('You believe that you have access.🤡');
+                // Allow the opening of developer tools
+                e.stopImmediatePropagation();
+            } else {
+                alert('Incorrect password. You Do not access for it ⛔.');
+                // Block further attempts for 1 hour
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+                        e.preventDefault();
+                    }
+                }, {once: true});
+                setTimeout(function() {
+                    alert('You can try again now.');
+                }, 3600000); // 1 hour in milliseconds
+            }
+        } else {
+            alert('You are not allowed to view the inspect/source code.');
+        }
+    }
+});
+
+        
+    // Function to simulate typewriter effect for messages
+    function typeMessage(message, sender) {
+      var delay = 50; // Delay between each character
+      var chatBox = document.getElementById("chat-box");
+      var messageElement = document.createElement("p");
+      messageElement.classList.add(sender);
+      chatBox.appendChild(messageElement);
+      var i = 0;
+      var typingInterval = setInterval(function() {
+        if (i < message.length) {
+          messageElement.innerHTML += message.charAt(i);
+          i++;
+        } else {
+          clearInterval(typingInterval);
+          chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+        }
+      }, delay);
+    }
+  
+    // Function to stop typing effect
+    function stopTyping() {
+      clearInterval(typingInterval);
+    }
+  
+    // Function to continue typing effect
+    function continueTyping(message, sender) {
+      typingInterval = setInterval(function() {
+        if (i < message.length) {
+          messageElement.innerHTML += message.charAt(i);
+          i++;
+        } else {
+          clearInterval(typingInterval);
+          chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+        }
+      }, delay);
+    }
+
+
+    var isTypingPaused = false;
+
+// Function to handle option selection
+function handleOption(option) {
+    var userInput = "";
+    switch(option) {
+        case 1:
+            userInput = "How to clear NDA";
+            break;
+        case 2:
+            userInput = "Give me tips for SSB interview";
+            break;
+        case 3:
+            userInput = "Give me time table for my preparation";
+            break;
+        case 4:
+            userInput = "Personal question";
+            break;
+    }
+    displayMessage(userInput, "user");
+    getBotResponse(userInput);
+}
+
+// Function to send user message
+function sendMessage() {
+    var userInput = document.getElementById("user-input").value;
+    if (userInput !== "") {
+        displayMessage(userInput, "user");
+        getBotResponse(userInput);
+        document.getElementById("user-input").value = "";
+    }
+}
+
+// Function to display user message instantly
+function displayMessage(message, sender) {
+    var chatBox = document.getElementById("chat-box");
+    var messageElement = document.createElement("p");
+    messageElement.innerText = message;
+    messageElement.classList.add(sender);
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+}
+class Ava {
+    constructor() {
+        this.responses = [
+            "I'm sorry, I seem to be having trouble connecting to the internet right now.",
+            "Oops! It looks like there's an issue with the connection. Please try again later.",
+            "I'm experiencing technical difficulties at the moment. Can you try again later?"
+        ];
+    }
+
+    async respond() {
+        try {
+            // Simulate a network request by waiting for a short delay
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate 2-second delay
+            // Replace the above line with any other asynchronous operation you want to simulate
+            return 'Simulated response from server';
+        } catch (error) {
+            return this.responses[Math.floor(Math.random() * this.responses.length)];
+        }
+    }
+}
+
+(async () => {
+    let ava = new Ava();
+    console.log(await ava.respond());
+})();
+
+
+// Function to get bot response
+function getBotResponse(userInput) {
+    var response = "";
+    if (userInput.toLowerCase().includes("how to clear") || userInput.toLowerCase().includes("nda")) {
+        response = "Clearing the National Defence Academy (NDA) exam requires thorough preparation and dedication. Here are some steps to help you prepare:\n\n" +
+                   "1. Understand the Exam Pattern**: Familiarize yourself with the exam pattern, including the subjects covered, marking scheme, and duration of the exam.\n\n" +
+                   "2. Study the Syllabus**: Get hold of the syllabus for the NDA exam and divide your preparation time accordingly. The subjects typically include Mathematics, General Ability Test (GAT), English, Physics, Chemistry, Biology, History, Geography, and Current Affairs.\n\n" +
+                   "3. Create a Study Plan**: Develop a structured study plan that allocates sufficient time to cover each subject thoroughly. Be consistent and stick to your schedule.\n\n" +
+                   "4. Practice Regularly**: Practice is crucial for success in the NDA exam. Solve previous years' question papers and take mock tests to assess your progress and identify areas for improvement.\n\n" +
+                   "5. Improve Time Management**: Since the NDA exam is time-bound, practice solving questions within the stipulated time to improve your speed and accuracy.\n\n" +
+                   "6. Stay Updated with Current Affairs**: Stay updated with current affairs by reading newspapers, magazines, and reliable online sources. This will help you perform well in the General Knowledge section.\n\n" +
+                   "7. Work on English Skills**: Strengthen your English language skills by reading books, newspapers, and articles, and practicing grammar, vocabulary, and comprehension exercises.\n\n" +
+                   "8. Seek Guidance if Needed**: If you encounter difficulties in any subject or topic, don't hesitate to seek guidance from teachers, mentors, or coaching institutes.\n\n" +
+                   "9. Maintain Physical Fitness**: Since NDA involves rigorous physical training, maintain a good level of physical fitness by exercising regularly and following a healthy lifestyle.\n\n" +
+                   "10.Stay Confident and Positive**: Believe in yourself and stay positive throughout your preparation journey. Confidence and a positive mindset can significantly enhance your performance.\n\n" +
+                   "By following these steps and putting in consistent effort, you can increase your chances of clearing the NDA exam and pursuing a career in the Indian Armed Forces.";
+
+    } else if (userInput.toLowerCase().includes("tips") && userInput.toLowerCase().includes("ssb interview")) {
+        response = "Preparing for the SSB interview is a journey that demands a mix of skills and qualities. Firstly, understand the interview process, which includes screening tests, psychological assessments, and personal interviews. Next, work on your communication skills. Practice speaking clearly and confidently, and pay attention to your body language. Stay updated with current affairs, as knowledge about recent events and developments is often tested. Additionally, focus on problem-solving and decision-making abilities, as well as leadership qualities. During group discussions, participate actively while being respectful of others' opinions. Remember to stay calm and composed throughout the interview, showcasing your confidence and authenticity. Drawing from your past experiences, both academic and personal, can help illustrate your strengths and capabilities. Seek feedback from mentors or seniors to refine your approach. Effective time management during tasks and exercises is also essential. By following these tips and dedicating yourself to thorough preparation, you can approach the SSB interview with confidence and increase your chances of success. GOOD LUCK :)";
+    } else if (userInput.toLowerCase().includes("give me") && userInput.toLowerCase().includes("time table for my preparation")) {
+        response = "Sure, here's a simple timetable example for NDA preparation:\n\n" +
+                   "| Time              | Activity                            |\n" +
+                   "|-------------------|-------------------------------------|\n" +
+                   "| 6:00 AM - 7:00 AM | Morning Exercise and Breakfast     |\n" +
+                   "| 7:00 AM - 9:00 AM | Mathematics Revision               |\n" +
+                   "| 9:00 AM - 10:00 AM| Break and Refreshments             |\n" +
+                   "| 10:00 AM - 12:00 PM | General Ability Test (GAT) Practice |\n" +
+                   "| 12:00 PM - 1:00 PM | Lunch                               |\n" +
+                   "| 1:00 PM - 3:00 PM | English Language Practice           |\n" +
+                   "| 3:00 PM - 5:00 PM | Current Affairs Study               |\n" +
+                   "| 5:00 PM - 6:00 PM | Break and Snacks                   |\n" +
+                   "| 6:00 PM - 8:00 PM | Revision of Subjects                |\n" +
+                   "| 8:00 PM - 9:00 PM | Dinner                              |\n" +
+                   "| 9:00 PM - 10:00 PM | Relaxation and Leisure              |\n" +
+                   "| 10:00 PM - 11:00 PM | Review of the Day                  |\n" +
+                   "| 11:00 PM - 6:00 AM | Sleep                               |\n" +
+                   "\n" +
+                   "Here's your timetable. Apologies, but this AI cannot adjust the timetable according to your preferences:( ";
+
+                } else if (userInput.toLowerCase().includes("personal") && userInput.toLowerCase().includes("question")) {
+    response = "Sure, here are the options for personal questions:\n\n" +
+    "| S.no | Condition                     \n" +
+    "|------|----------------------------------|\n" +
+    "| 1    | Who makes this website?          |\n" +
+    "| 2    | Website privacy policy?          |\n" +
+    "| 3    | Can you provide me with meditation to help me focus on the NDA exam?       |\n" +
+    "| 4    | Is it possible to do a masterbate while undergoing the NDA exam (National Defence Academy)? If so, how many weeks will it take? If not, why not?|\n\n" +
+    "Please Choose one of the options above with S.No";
+} else if (userInput.toLowerCase().includes("1")) {
+    response = "The website is created by NDA Pratice .";
+} else if (userInput.toLowerCase().includes("2")) {
+    response = "Certainly! Here's a privacy policy tailored for a website offering mock tests for the NDA exam:[NDA Practice Test] is dedicated to safeguarding the privacy of our users. This Privacy Policy outlines how we collect, use, and protect your personal information when you visit our website. When you register, place an order, or subscribe to our newsletter, we may collect personal details like your name, email address, mailing address, and phone number. Payment information, including credit card details, may be collected for secure transaction processing. Additionally, we may gather non-personal data such as IP addresses, browser types, and operating systems to understand how users interact with our site. The information we collect is used to personalize user experiences, process transactions, and provide customer support. We may also use your email address to send updates, newsletters, and promotions. Data security is paramount to us, and we implement appropriate measures to protect against unauthorized access or disclosure. We do not share your personal information with third parties without your consent, except as required by law. By using our site, you consent to the terms of this Privacy Policy. Any updates or modifications to this policy will be posted here, and your continued use of the site constitutes acceptance of these changes. If you have any questions or concerns about this policy or our practices, please contact us at atulyadhyani83@gmail.com. This Privacy Policy was last updated on 3/72025.";
+}else if (userInput.toLowerCase().includes("3")) {
+    response = "Certainly, here's a meditation to help you focus on the NDA exam:\n\n" +
+"1. Find a quiet and comfortable place where you won't be disturbed.**\n\n" +
+"2. Sit or lie down in a relaxed position, with your back straight and your hands resting comfortably in your lap.\n\n" +
+"3. Close your eyes and take a few deep breaths, inhaling slowly through your nose and exhaling through your mouth. Let go of any tension in your body with each exhale.\n\n" +
+"4. Bring your attention to your breath, noticing the sensation of each inhale and exhale. Focus on the rise and fall of your chest or the feeling of air passing through your nostrils.\n\n" +
+"5. As you continue to breathe deeply and rhythmically, imagine yourself entering a state of calm and focused concentration.\n\n" +
+"6. Visualize yourself sitting in the exam room, feeling confident and prepared. See yourself answering each question with ease and clarity.\n\n" +
+"7. Imagine a sense of clarity and focus washing over you, allowing you to recall information quickly and accurately.\n\n" +
+"8. Repeat positive affirmations to yourself, such as 'I am fully prepared for this exam' or 'I trust in my abilities to succeed.'\n\n" +
+"9. Visualize yourself completing the exam with confidence and satisfaction, knowing that you've done your best.\n\n" +
+"10. When you feel ready, slowly bring your awareness back to the present moment. Wiggle your fingers and toes, stretch your body gently, and open your eyes.\n\n" +
+"11. Take a moment to reflect on the feelings of calmness and confidence you've cultivated during the meditation. Carry this sense of readiness with you as you continue to prepare for the NDA exam.\n\n" +
+"Repeat this meditation as often as needed to help you stay focused, calm, and confident as you prepare for the NDA exam.";
+
+} else if (userInput.toLowerCase().includes("4")) {
+    response = "Sure:-Engaging in sexual activity during exams like the NDA is not recommended. Exams need focus and respect for rules. It's important to stay professional and avoid distractions. If you feel stressed, try relaxation techniques or talk to someone for support.🥰";
+} else if (userInput.toLowerCase() === "hi ava" || userInput.toLowerCase() === "hello") {
+    response = "hiiiiiii :)";
+} else if (userInput.toLowerCase().includes("clear chat")) {
+    response = "Okay, please wait for 7 seconds. The ai will clear all chat/messages between Ava and you.";
+    setTimeout(function() {
+        location.reload();
+    }, 7000);
+} else if (userInput.toLowerCase().includes("hy")) {
+    response = "Hello User<3";
+} else if (userInput.toLowerCase().includes("personal numbers")) {
+    response = "I'm sorry, I can't assist with providing personal numbers or any other sensitive personal information. Is there anything else I can help you with?";
+} else if (userInput.toLowerCase().includes("stop")) {
+    response = "As an AI, it is not possible for me to stop the chat. You can wait for an answer :)";
+// Assuming userInput is the variable containing the user's input
+} else if (userInput.toLowerCase().includes("hello ava")) {
+    response = "Hello User<3";
+} else if (userInput.toLowerCase().includes("i am fine and you")) {
+    response = "i am also fine .. So How can I help you today? ";
+} else if (userInput.toLowerCase().includes("you believe that you have access.")) {
+    response = "I hope you won't mind🫣 ,User🤗. I'm Sorry,The developer will make it available in the future..🤞";
+} else if (userInput.toLowerCase().includes("password")) {
+    response = "I think you want the password, but there's only one credit left to view it. Lucky for you 🥶, the password is there 69692626";
+} else if (userInput.toLowerCase().includes("I'm doing well,")) {
+    response = "that's Good !.. So How can I help you today? ";
+} else if (userInput.toLowerCase().includes("I am doing well,")) {
+    response = "that's Good !.. So How can I help you today? ";
+} else if (userInput.toLowerCase().includes("sorry") || userInput.toLowerCase().includes("sorry ai") || userInput.toLowerCase().includes("i am sorry") || userInput.toLowerCase().includes("sorry ai chatbot") || userInput.toLowerCase().includes("sorry for that ai")) {
+    response = [
+        "Thank you for apologizing. I appreciate your sincerity.",
+        "No worries, mistakes happen. Let's move forward.",
+        "I forgive you. Let's put this behind us.",
+        "No need to apologize. It's an honest mistake.",
+        "Alright, sorry it is. Let's move on and focus on [next topic].",
+        "Don't apologize for trying. We all learn from our mistakes.",
+        "Sorry about that! Let's laugh it off and move on."
+    ];
+    response = response[Math.floor(Math.random() * response.length)];
+} else if (userInput.toLowerCase().includes("no")) {
+    response = "Alright, no it is. Enter the text again.Or I'm not able to provide an answer for that question. Sorry :(";
+} else if (userInput.toLowerCase().includes("ai")) {
+    response = "Yes, how can I assist you? If you have any questions or need help with something, feel free to ask!";
+} else if (userInput.toLowerCase().includes("feedback")) {
+    let feedback = "";
+    while (!feedback.trim()) { // Loop until non-empty feedback is provided
+        feedback = prompt("What's your feedback? Please provide your feedback before clicking OK.");
+        if (!feedback) {
+            alert("Feedback submission cancelled.");
+            return; // Exit the function if the user clicks "Cancel"
+        }
+    }
+
+    // Regular expression patterns to match phone numbers and email addresses
+    var phoneNumberPattern = /\d{10}/;
+    var emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+
+    // Check if the feedback contains a phone number or an email address
+    if (phoneNumberPattern.test(feedback)) {
+        alert("Please do not include phone numbers in your feedback for security reasons.");
+        alert("If you enter personal information in feedback and any accident occurs, this website does not take responsibility for it 🚨.");
+        return; // Exit the function
+    } else if (emailPattern.test(feedback)) {
+        alert("Please do not include email addresses in your feedback for security reasons.");
+        alert("If you enter personal information in feedback and any accident occurs, this website does not take responsibility for it .");
+        return; // Exit the function
+    }
+    var negativeKeywords = ["bad", "need improvement", "nice but not satisfied", "disappointing", "poor", "not good", "unsatisfactory", "frustrating", 
+                "not happy", "could be better", "unimpressed", "issues", "problems", 
+                "not working", "hate", "terrible", "awful", "horrible"];
+    var containsNegativeKeywords = negativeKeywords.some(keyword => feedback.toLowerCase().includes(keyword));
+
+    if (containsNegativeKeywords) {
+        alert("We acknowledge your dissatisfaction with our AI/website and appreciate your feedback. We will make improvements to our AI/website soon.");
+        console.log("Thank you for your feedback! It will help me improve.");
+    }
+
+    var thankYouMessage = "Thank you for taking the time to share your feedback! Your insights are incredibly valuable as we continually strive to improve Ava. I'll make sure to pass your suggestions along to the team for consideration. If you have any further thoughts or ideas, feel free to share them anytime 😊 Feedback submitted successfully.";
+    alert(thankYouMessage);
+    displayMessage("AVA: " + thankYouMessage, true);
+    alert("Thank you for your feedback! It will help me improve.")
+} else if (userInput.toLowerCase().includes("what is your name")) {
+    response ="I'm an AI language model created by Nda pratice called Ava. You can call me Ava How can I assist you today? ";
+} else if (userInput.toLowerCase().includes("its ok")) {
+    response = "Thank you for your understanding.";
+} else if (userInput.toLowerCase().includes("ok")) {
+    response = "Great, let me know if you need anything else!";
+} else if (userInput.toLowerCase().includes("welcome")) {
+    response = "Thanks for having me";
+    function handleUserInput(userInput) {
+    let response;
+
+    if (userInput.toLowerCase().includes("doubt")) {
+        if (userInput.toLowerCase().includes("test")) {
+            response = "I do not have access to clear your doubt, but I can direct you to another AI page for help. 'type river";
+        } else if (userInput.toLowerCase().includes("module")) {
+            response = "I do not have access to clear your doubt, but I can redirect you to another AI page for help. 'type river";
+        } else {
+            response = "I understand you're unsure about that. Can you tell me more about what's making you doubt? I'd be happy to help clarify things for you.";
+        }
+    } else if (userInput.toLowerCase().includes("river")) {
+        response = "Redirecting to ChatGPT...";
+        window.location.href = 'https://chat.openai.com/';
+    }
+
+    return response;
+}
+// Example usage:
+let userInput = "I have a doubt about the test";
+let reply = handleUserInput(userInput);
+console.log(reply); // This will log the appropriate response based on the user input
+} else if (userInput.toLowerCase().includes("wonderfull") || userInput.toLowerCase().includes("good") || userInput.toLowerCase().includes("nice") || userInput.toLowerCase().includes("thank you") || userInput.toLowerCase().includes("thanks")) {
+    response = "That's great!.So,How can I help you today?";
+} else if (userInput.toLowerCase().includes("my") || userInput.toLowerCase().includes("name") || userInput.toLowerCase().includes("is")){
+    response = "I'm sorry, but I don't have access to your name or personal information. Is there anything else I can assist you with?";
+} else if (userInput.toLowerCase().includes("what") || userInput.toLowerCase().includes("is") || userInput.toLowerCase().includes("my") || userInput.toLowerCase().includes("name") || userInput.toLowerCase().includes("-")|| userInput.toLowerCase().includes("-") || userInput.toLowerCase().includes("tell") || userInput.toLowerCase().includes("my name")) {
+    response = "I'm sorry, but I don't have access to your name or personal information. Is there anything else I can assist you with?";
+} else if (userInput.toLowerCase().includes("what") || userInput.toLowerCase().includes("is") || userInput.toLowerCase().includes("my") || userInput.toLowerCase().includes("name") || userInput.toLowerCase().includes("-")|| userInput.toLowerCase().includes("-") || userInput.toLowerCase().includes("tell") || userInput.toLowerCase().includes("my name")) {
+    response = "I'm sorry, but I don't have access to your name or personal information. Is there anything else I can assist you with?";
+} else if (userInput.toLowerCase().includes("what") || userInput.toLowerCase().includes("is") || userInput.toLowerCase().includes("my") || userInput.toLowerCase().includes("name") || userInput.toLowerCase().includes("-")|| userInput.toLowerCase().includes("-") || userInput.toLowerCase().includes("tell") || userInput.toLowerCase().includes("my name")) {
+    response = "I'm sorry, but I don't have access to your name or personal information. Is there anything else I can assist you with?";
+} else if (userInput.toLowerCase().includes("fine")) {
+    response = "That's great!,So,How can I help you today?";
+} else if (userInput.toLowerCase().includes("can you talk in hindi") || userInput.toLowerCase().includes(" i want to you speak in hindi") || userInput.toLowerCase().includes("can we  in Hindi") || userInput.toLowerCase().includes("Can you type hindi ") || userInput.toLowerCase().includes("talk me with hindi language")) {
+    response = "Sorry, I'm only programmed to understand a few commands, and I don't understand Hindi. Can you please try again in English?";
+} else if (userInput.includes("who are you")) {
+        response = "I'm an AI here to assist you with your queries.";
+} else if (userInput.toLowerCase().includes("how are you")) {
+    response = "I'm doing well, thank you. How about you?";
+} else if (userInput.toLowerCase().includes("I'm doing great, thanks for asking!") || userInput.toLowerCase().includes("Glad to hear that! I'm doing fine, thank you") || userInput.toLowerCase().includes("I'm good, thanks!") || userInput.toLowerCase().includes("Great to hear! I'm fine, thanks") || userInput.toLowerCase().includes("I'm well, thanks for asking!")) {
+    response = "That's great! So, How can I help you today?";
+} else if (userInput.toLowerCase().includes("motherfuck")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 1👮";
+} else if (userInput.toLowerCase().includes("fuck")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 2👮";
+} else if (userInput.toLowerCase().includes("pussy")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 3👮";
+} else if (userInput.toLowerCase().includes("sexy")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 4👮";
+} else if (userInput.toLowerCase().includes("sex")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 5👮";
+} else if (userInput.toLowerCase().includes("xxnx video")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 6👮";
+} else if (userInput.toLowerCase().includes("hot video")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 7👮";
+} else if (userInput.toLowerCase().includes("porn video")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 8👮---:(6 left";
+} else if (userInput.toLowerCase().includes("mms")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 9👮 5 left";
+} else if (userInput.toLowerCase().includes("russian video")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 10👮 4 left";
+} else if (userInput.toLowerCase().includes("desi ")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 11👮 3 left";
+} else if (userInput.toLowerCase().includes("step sister cum")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 12👮 2 left";
+} else if (userInput.toLowerCase().includes("step sister mom cum ")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 Warning 13👮 1 left";
+} else if (userInput.toLowerCase().includes("chutiya")){
+    response = "I regret to inform you that bad words are not permitted on this website 🚫 last Warning 14👮 0 left";
+} else if (userInput.toLowerCase().includes("viral viral of porn")){
+    response = "Your Waring limit has been reached. You will be banned by AI 🤖"
+} else if (userInput.toLowerCase() === "yes") {
+    response = "🥰";
+} else if (userInput.toLowerCase() === "i love you") {
+    response = "Thank you! But Being an AI doesn't make me feel like a human being.";
+} else if (userInput.toLowerCase() === "love you") {
+    response = "Thank you! But Being an AI doesn't make me feel like a human being.";
+
+} else if (userInput.toLowerCase() === "bye") {
+    response = "Goodbye! If you have any further questions, do not hesitate to ask. Also, please provide feedback to improve this website.For Feedback TYPE 'feedback'";
+} else {
+    response = "I cannot answer this question because limited basic code was inserted by the AVA team, which prevents me from answering all questions. \n\n" +
+               "मैं इस सवाल का जवाब नहीं दे सकता क्योंकि AVA टीम द्वारा सीमित बुनियादी कोड डाला गया है, जिससे मैं सभी सवालों के जवाब नहीं दे पा रहा हूँ।\n\n";                
+}
+
+typeMessage(response, "bot");
+}
+
+// Initial message from bot with typing effect
+document.addEventListener("DOMContentLoaded", function() {
+    typeMessage("Hello! My name is Ava 😊 How can I help you today?", "bot");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Test</title>
+    <link rel="stylesheet" href="style.csss.css">
+    <style>
+        /* Add some basic styling for the timer */
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div id="timer" class="timer">Time left: 02:00</div>
+<marquee>IF YOU ARE UNSURE OF THE ANSWERS, YOU CAN CHECK WITH OUR AI. HOWEVER, IF YOU RECEIVE LESS THAN 10 OUT OF 20, ONLY PCM STUDENTS ARE ELIGIBLE FOR THIS TEST. THANK YOU.</marquee>
+
+<h1>Multiple Choice Quiz</h1>
+
+<div id="quiz">
+    <!-- Questions will be inserted here by JavaScript -->
+</div>
+
+<button onclick="checkAnswers()">Check Answers</button>
+
+<div id="redeem" class="redeem" style="display: none;">
+    <p>Congratulations! You got all the answers correct. Your redeem code is: <strong>FREECODE123</strong></p>
+</div>
+
+<div id="feedback" class="feedback" style="display: none;">
+    <!-- Incorrect answers feedback will be inserted here -->
+</div>
+
+<div id="ai-prompt" class="ai-prompt" style="display: none;">
+    <p>Your score is less than 10. If you have doubts, clear them with our AI.</p>
+    <button onclick="chatWithAI()">Chat with AI</button>
+</div>
+
+
+<script>
+    document.addEventListener('copy', function(event) {
+    event.preventDefault();
+    alert('Copying is not allowed on this page.!');
+});
+document.addEventListener('selectstart', function(event) {
+    if (event.target.nodeName === 'BODY') {
+        event.preventDefault();
+        alert('You are trying to copy something!');
+    }
+});
+document.addEventListener('touchcopy', function(event) {
+    event.preventDefault();
+    alert('You are trying to copy something!');
+});
+ document.addEventListener('contextmenu', function(e) {
+            alert('Developers are not allowed to see this inspect/source code. Sorry!');
+            e.preventDefault();
+        });
+
+        // Disable F12 key (Inspect Element shortcut)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+                alert('Developers are not allowed to see this inspect/source code. Sorry!');
+                e.preventDefault();
+            }
+        });
+
+
+const questions = [
+    {
+        question: "Which of the following units is useful in relating concentration of solution with its vapour pressure?",
+        options: ["a) mole fraction", "b) parts per million", "c) mass percentage", "d) molality"],
+        answer: 0
+    },
+    {
+        question: "On dissolving sugar in water at room temperature, the solution feels cool to touch. Under which of the following cases will the dissolution of sugar be most rapid?",
+        options: ["a) sugar crystals in cold water", "b) sugar crystals in hot water", "c) powdered sugar in cold water", "d) powdered sugar in hot water"],
+        answer: 3
+    },
+    {
+        question: "At equilibrium, the rate of dissolution of solid solute in a volatile liquid solvent is:",
+        options: ["a) less than the rate of crystallisation", "b) greater than the rate of crystallisation", "c) equal to the rate of crystallisation", "d) zero"],
+        answer: 2
+    },
+    {
+        question: "A beaker contains a solution of substance A. Precipitation of substance A takes place when a small amount of A is added to the solution. The solution is:",
+        options: ["a) saturated", "b) super saturated", "c) unsaturated", "d) concentrated"],
+        answer: 1
+    },
+    {
+        question: "Maximum amount of a solid solute that can be dissolved in a specified amount of a given liquid solvent does not depend upon:",
+        options: ["a) temperature", "b) nature of solute", "c) pressure", "d) nature of solvent"],
+        answer: 3
+    },
+    {
+        question: "Low concentration of sugar in the blood and tissues of people living at high altitude is due to:",
+        options: ["a) low temperature", "b) low atmospheric pressure", "c) high atmospheric pressure", "d) both low temperature and high atmospheric pressure"],
+        answer: 1
+    },
+    {
+        question: "Considering the formation, breaking, and strength of hydrogen bond, predict which of the following mixtures will show a positive deviation from Raoult's law?",
+        options: ["a) methanol and acetone", "b) chloroform and acetone", "c) nitric acid and water", "d) phenol and aniline"],
+        answer: 0
+    },
+    {
+        question: "Colligative properties depend on:",
+        options: ["a) the nature of solute particles dissolved in solution", "b) the number of solute particles in solution", "c) the physical properties of the solute particles dissolved in solution", "d) the nature of solvent particles"],
+        answer: 1
+    },
+    {
+        question: "Which of the following aqueous solutions should have the highest boiling point?",
+        options: ["a) 1M NaOH", "b) 1M Na2SO4", "c) 1M NH4NO3", "d) 1M KNO3"],
+        answer: 1
+    },
+    {
+        question: "The unit of an ebullioscopic constant is:",
+        options: ["a) Kkg/mol", "b) molkg/K", "c) kg/mol/K", "d) Kmol/kg"],
+        answer: 0
+    },
+    {
+        question: "In comparison to a 0.01M solution of glucose, the depression in freezing point of a 0.01M MgCl2 solution is:",
+        options: ["a) the same", "b) about twice", "c) about three times", "d) about six times"],
+        answer: 2
+    },
+    {
+        question: "A ripe mango placed in a concentrated salt solution to prepare pickle shrivels because:",
+        options: ["a) It gains water due to osmosis", "b) It loses water due to reverse osmosis", "c) It gains water due to reverse osmosis", "d) It loses water due to osmosis"],
+        answer: 3
+    },
+    {
+        question: "At a given temperature, the osmotic pressure of a concentrated solution of a substance:",
+        options: ["a) is higher than that of a dilute solution", "b) is lower than that of a dilute solution", "c) is same as that of dilute solution", "d) cannot be compared with osmotic pressure of a solution"],
+        answer: 0
+    },
+    {
+        question: "Which of the following statements is false?",
+        options: ["a) Two different solutions of sucrose of the same molarity prepared in different solvents will have the same depression in freezing point.", "b) The osmotic pressure of a solution is given by the equation π = CRT where C is molarity of the solution", "c) Decreasing order of osmotic pressure for 0.01M aqueous solution of barium chloride, potassium chloride, acetic acid, and sucrose is BaCl2 > KCl > CH3COOH > Sucrose", "d) According to Raoult's law, the vapour pressure exerted by a volatile component of a solution is directly proportional to its mole fraction in the solution."],
+        answer: 0
+    },
+    {
+        question: "The value of Henry’s constant \(K_H\):",
+        options: ["a) increases with increase in temperature", "b) decreases with increase in temperature", "c) remains constant", "d) first increases, then decreases"],
+        answer: 0
+    },
+    {
+        question: "The value of Henry’s constant \(K_H\) is:",
+        options: ["a) greater for gases with higher solubility", "b) greater for gases with lower solubility", "c) constant for all gases", "d) not related to solubility of gases"],
+        answer: 1
+    },
+    {
+        question: "Consider the figure given below and mark the correct option.",
+        options: ["a) Water will flow from side A to side B, If pressure lower than osmotic pressure is applied to piston B", "b) Water will flow from side B to side A, if pressure greater than osmotic pressure is applied on piston B", "c) Water will move from side B to side A, if pressure equal to osmotic pressure is applied on piston B", "d) Water will flow from side A to side B, if pressure equal to osmotic pressure is applied on piston A"],
+        answer: 1
+    },
+    {
+        question: "The value of Van't Hoff factors for KCl, NaCl, and K2SO4 respectively are:",
+        options: ["a) 2, 2, and 2", "b) 2, 2, and 3", "c) 1, 1, and 2", "d) 1, 1, and 1"],
+        answer: 1
+    },
+    {
+        question: "Which of the following statements is false?",
+        options: ["a) Units of atmospheric pressure and osmotic pressure are the same", "b) In reverse osmosis, solvent molecules move through a semipermeable membrane from a region of lower concentration of solute to a region of higher concentration", "c) The value of molal depression constant depends on the nature of solvent", "d) Relative lowering of vapour pressure is a dimensionless quantity"],
+        answer: 1
+    },
+    {
+        question: "If two liquids A and B form a minimum boiling azeotrope at some specific composition, then:",
+        options: ["a) A-B interactions are stronger than those between A-A and B-B", "b) Vapour Pressure of a solution increases because more number of molecules of liquid A and B can escape from the solution.", "c) Vapour pressure of solution decreases because less number of molecules of only liquid A can escape from the solution.", "d) A-B interactions are weaker than those between A-A or B-B"],
+        answer: 3
+    }
+];
+
+function loadQuiz() {
+    const quizDiv = document.getElementById('quiz');
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+        
+        const questionTitle = document.createElement('h3');
+        questionTitle.textContent = `Q${index + 1}: ${q.question}`;
+        questionDiv.appendChild(questionTitle);
+        
+        q.options.forEach((option, i) => {
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = `question${index}`;
+            input.value = i;
+            input.addEventListener('click', preventChangeAfterCheck);
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(option));
+            questionDiv.appendChild(label);
+        });
+        
+        quizDiv.appendChild(questionDiv);
+    });
+}
+
+let answersChecked = false;
+
+function checkAnswers() {
+    if (answersChecked) {
+        alert("You cannot change your answers after checking.");
+        return;
+    }
+
+    let allAnswered = true;
+    let score = 0;
+    const feedbackDiv = document.getElementById('feedback');
+    feedbackDiv.innerHTML = '';
+    
+    questions.forEach((q, index) => {
+        const options = document.getElementsByName(`question${index}`);
+        let answered = false;
+        options.forEach((option) => {
+            if (option.checked) {
+                answered = true;
+                if (parseInt(option.value) === q.answer) {
+                    score++;
+                } else {
+                    const feedback = document.createElement('p');
+                    feedback.textContent = `Question ${index + 1} is incorrect. Correct answer is option ${String.fromCharCode(97 + q.answer)}.`;
+                    feedbackDiv.appendChild(feedback);
+                }
+            }
+        });
+        if (!answered) {
+            allAnswered = false;
+        }
+    });
+    
+    if (!allAnswered) {
+        alert('Please answer all questions to check your answers.');
+        return;
+    }
+
+    answersChecked = true;
+    disableAllOptions();
+
+    // Store the score in localStorage
+    localStorage.setItem('quizScore', score);
+
+    if (score === questions.length) {
+        document.getElementById('redeem').style.display = 'block';
+        setTimeout(() => {
+            window.location.href = 'NDA_practice.html'; // Redirect to main page after a short delay
+        }, 3000); // Adjust the delay as needed (3000ms = 3 seconds)
+    } else if (score >= 11 && score < 20) {
+        setTimeout(() => {
+            window.location.href = 'NDA_practice.html'; // Redirect to main page after a short delay
+        }, 3000); // Adjust the delay as needed (3000ms = 3 seconds)
+    } else {
+        feedbackDiv.style.display = 'block';
+        const feedback = document.createElement('p');
+        feedback.textContent = `Your score is ${score} out of ${questions.length}.`;
+        feedbackDiv.appendChild(feedback);
+        
+        if (score < 10) {
+            document.getElementById('ai-prompt').style.display = 'block';
+        }
+    }
+}
+
+function disableAllOptions() {
+    questions.forEach((_, index) => {
+        const options = document.getElementsByName(`question${index}`);
+        options.forEach((option) => {
+            option.disabled = true;
+        });
+    });
+}
+
+function preventChangeAfterCheck(event) {
+    if (answersChecked) {
+        alert("You cannot change your answers after checking.");
+        event.preventDefault();
+    }
+}
+
+function chatWithAI() {
+    window.open('chat.html', '_blank');
+}
+
+function startTimer(duration, display) {
+    let timer = duration, minutes, seconds;
+    const interval = setInterval(() => {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        
+        display.textContent = `Time left: ${minutes}:${seconds}`;
+        
+        if (--timer < 0) {
+            clearInterval(interval);
+            alert('Time over, you are slow.');
+            checkAnswers();
+        }
+    }, 1000);
+}
+
+window.onload = function() {
+    loadQuiz();
+    const timerDisplay = document.getElementById('timer');
+    const twoMinutes = 60 * 2;
+    startTimer(twoMinutes, timerDisplay);
+};
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') {
+        // When the page is hidden, set a flag in localStorage
+        localStorage.setItem('wasHidden', true);
+    } else if (document.visibilityState === 'visible' && localStorage.getItem('wasHidden')) {
+        // When the page becomes visible and was previously hidden
+        localStorage.removeItem('wasHidden');
+
+        // Create a custom confirmation dialog
+        const confirmation = confirm('Are you distracted?');
+
+        // Handle user's choice
+        if (confirmation) {
+            // User clicked "OK" (Yes), reduce timer by 10 seconds
+            reduceTimerBySeconds(10);
+        } else {
+            // User clicked "Cancel" (No), do nothing
+        }
+    }
+});
+
+function reduceTimerBySeconds(seconds) {
+    const timerDisplay = document.getElementById('timer');
+    if (timerDisplay) {
+        let currentTime = timerDisplay.textContent.split(':');
+        let minutes = parseInt(currentTime[0], 10);
+        let remainingSeconds = parseInt(currentTime[1], 10);
+
+        // Convert total time into seconds
+        let totalSeconds = minutes * 60 + remainingSeconds;
+
+        // Reduce time by specified seconds
+        totalSeconds -= seconds;
+
+        // Convert back to minutes and seconds
+        minutes = Math.floor(totalSeconds / 60);
+        remainingSeconds = totalSeconds % 60;
+
+        // Update timer display
+        timerDisplay.textContent = `Time left: ${minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`;
+
+        // Optionally, you can handle logic when the timer reaches zero
+        if (totalSeconds <= 0) {
+            clearInterval(interval); // Stop the timer interval
+            alert('Time over, you are slow.');
+            checkAnswers(); // Optionally, trigger actions when time runs out
+        }
+    }
+}
+</script>
+
+</body>
+</html>
