@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDA PRACTICE TEST</title>
+    <link rel="stylesheet" href="practice.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .home-button, .details-button {
+            margin-left: 10px;
+        }
+
+        .home-button button, .details-button button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .home-button button:hover, .details-button button:hover {
+            background-color: #0056b3;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        .test-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .test-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .test-card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .test-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .test-card button:hover {
+            background-color: #0056b3;
+        }
+
+        .test-card.blue::before {
+            content: 'NEW';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff1100;
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .test-card.purple::before {
+            content: 'NEW';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f44336;
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .test-card.blue {
+            border-top: 5px solid #007bff;
+        }
+
+        .test-card.purple {
+            border-top: 5px solid #9c27b0;
+        }
+
+        .test-card.red {
+            border-top: 5px solid #f44336;
+        }
+
+        .test-card.yellow {
+            border-top: 5px solid #ffeb3b;
+        }
+        /* Add this CSS to style your new logo */
+        .navbar-logo img {
+            height: 100px; /* Adjust the height as needed */
+            width: 100px; /* Ensure the width is the same to make it square */
+            border-radius: 50%; /* Make the image circular */
+            object-fit: cover; /* Ensure the image covers the entire area */
+            .navbar-logo img {
+            transition: transform 0.5s ease;
+        }
+
+        .navbar-logo img:hover {
+            transform: rotate(360deg);
+        }
+    }
+    </style>
+</head>
+<body>
+    </nav>
+    <header>
+        <div class="navbar-logo">
+            <img src="NDA Practice.png" alt="NDA Practice Test Logo">
+        </div>
+            <h1>NDA Mock tests available for Mathematics & General Ability Test (NDA GAT)</h1>
+        </div>
+        <div class="home-button">
+            <button onclick="location.href='ai chatbot.html'">CHAT WITH AI</button>
+        </div>
+        <div class="details-button">
+            <button onclick="openDetailsForm()">DETAILS FORM</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="test-container">
+            <div class="test-card blue">
+                <h2>National Defence Academy - General Ability - Part A - English</h2>
+                <h6>1.THE MODULE CONTAINS 100 QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button onclick="location.href='Ability Part A - English.html'">TAKE FREE MOCK TEST</button>
+            </div>
+            <div class="test-card blue">
+    <h2>National Defence Academy - General Ability - Part B - English</h2>
+    <h6>1. THE MODULE HAS A TOTAL OF 100 QUESTIONS.</h6>
+    <h6>2. QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+    <button onclick="redirectToAbility('B')">TAKE FREE MOCK TEST</button>
+</div>
+
+            <div class="test-card purple">
+                <h2>National Defence Academy - Paper C - General Ability Test</h2>
+                <h6>1.THE MODULE HAS A TOTAL OF 100 QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button>TAKE FREE MOCK TEST</button>
+            </div>
+            <div class="test-card purple">
+                <h2>National Defence Academy - Paper D - General Ability Test</h2>
+                <h6>1.THE MODULE HAS A TOTAL OF 100 QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button>TAKE FREE MOCK TEST</button>
+            </div>
+
+            <div class="test-card red">
+                <h2>National Defence Academy - Paper I - Mathematics</h2>
+                <h6>1.THE MODULE HAS A TOTAL OF 130 QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button onclick="location.href='maths.html'">TAKE FREE MOCK TEST</button>
+            </div>
+            <div class="test-card red">
+                <h2>National Defence Academy - Paper II - Mathematics</h2>
+                <h6>1.THE MODULE HAS A TOTAL OF 107  WRITTEN QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button>TAKE FREE MOCK TEST</button>
+            </div>
+            <div class="test-card red">
+                <h2>National Defence Academy - Paper III - Mathematics</h2>
+                <h6>1.THE MODULE HAS A TOTAL OF 100 QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button>TAKE FREE MOCK TEST</button>
+            
+            </div>
+            <div class="test-card red">
+                <h2>National Defence Academy - Paper IV - Mathematics</h2>
+                <h6>1.THE MODULE HAS A TOTAL OF 100 QUESTIONS.</h6>
+                <h6>2.QUESTIONS WILL BE RANDOMLY ASKED.</h6>
+                <button>TAKE FREE MOCK TEST</button>
+            </div>
+            <div class="test-card yellow">
+                <h2>Basic Test</h2>
+                <h6>THE PURPOSE OF THIS BASIC TEST IS TO TEST PCM STUDENTS ONLY.</h6>
+                <button onclick="location.href='Basic Test.html'">TAKE FREE MOCK TEST</button>
+            </div>  
+    </main>
+    <script>
+        let timerId = null;
+
+function openDetailsForm() {
+    alert("Please enter your details");
+    sessionStorage.setItem('detailsFilled', 'false');
+    timerId = setTimeout(() => {
+        if (sessionStorage.getItem('detailsFilled') === 'false') {
+            window.location.href = "Security Officer.html";
+        }
+        clearTimeout(timerId);
+    }, 10000); // 10 seconds
+}
+
+// Check if user refreshed the page while the alert is showing
+if (sessionStorage.getItem('detailsFilled') === 'false') {
+    window.location.href = "Security Officer.html";
+}
+   
+    // Request camera access
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            // If the user allows access, show the custom alert message
+            alert("As an NDA aspirant, you should know the security implications of using the camera. What are the uses of the camera on this website? Please be cautious.");
+            // Stop the camera stream immediately after getting permission
+            stream.getTracks().forEach(track => track.stop());
+        })
+        .catch(function(err) {
+            console.log("Camera access denied or not available.");
+        });
+
+// Request notification permission
+if (Notification.permission === 'default') {
+        Notification.requestPermission().then(function(permission) {
+            if (permission === 'granted') {
+                alert("Notifications enabled. You will be notified when a new module is added.");
+                // Store the permission status in localStorage
+                localStorage.setItem('notificationsEnabled', 'true');
+            } else {
+                alert("Notifications disabled. You won't receive updates about new modules.");
+                localStorage.setItem('notificationsEnabled', 'false');
+            }
+        });
+    }
+
+    // Check if there's a new module flag in localStorage
+    if (localStorage.getItem('newModuleAdded') === 'true' && localStorage.getItem('notificationsEnabled') === 'true') {
+        new Notification("New Module Added", {
+            body: "A new module has been added. Check it out now!",
+            icon: 'icon.png' // Optional: Path to an icon image
+        });
+        // Remove the flag after notifying
+        localStorage.removeItem('newModuleAdded');
+    }
+
+    // Simulate adding a new module for demonstration purposes
+    // In a real scenario, this should be set by the backend or admin interface
+    // localStorage.setItem('newModuleAdded', 'true');
+         document.addEventListener('copy', function(event) {
+    event.preventDefault();
+    alert('Copying is not allowed on this page.!');
+});
+document.addEventListener('selectstart', function(event) {
+    if (event.target.nodeName === 'BODY') {
+        event.preventDefault();
+        alert('You are trying to copy something!');
+    }
+});
+document.addEventListener('touchcopy', function(event) {
+    event.preventDefault();
+    alert('You are trying to copy something!');
+});
+            document.addEventListener('contextmenu', function(e) {
+            alert('Developers are not allowed to see this inspect/source code. Sorry!');
+            e.preventDefault();
+        });
+
+        // Disable F12 key (Inspect Element shortcut)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+                alert('Developers are not allowed to see this inspect/source code. Sorry!');
+                e.preventDefault();
+            }
+        });
+
+        function openUserDetailsForm() {
+            window.location.href = "details form.html"; // Change the URL to your user details form
+        }
+
+        function openDetailsForm() {
+            sessionStorage.setItem('detailsFilled', 'true');
+            window.location.href = "details form.html"; // Change the URL to your user details form
+        }
+
+        setTimeout(() => {
+            if (!sessionStorage.getItem('detailsFilled')) {
+                alert('Please enter your details');
+                openDetailsForm();
+            }
+        }, 10000); // 10 seconds
+        function redirectToAbility(part) {
+    window.location.href = `Ability.html?part=${part}`;
+}
+// Define separate arrays of questions for each part
+let partBQuestions = [
+    
+];
+
+function redirectToAbility(part) {
+    // Define an empty array to store the selected questions
+    let selectedQuestions = [];
+}
+
+const partCQuestions = [
+    // Add questions for part C here
+];
+
+const partDQuestions = [
+    // Add questions for part D here
+];
+
+function redirectToAbility(part) {
+    // Define an empty array to store the selected questions
+    let selectedQuestions = [];
+
+    // Select questions based on the part
+    switch(part) {
+        case 'B':
+            selectedQuestions = selectRandomQuestions(partBQuestions);
+            break;
+        case 'C':
+            selectedQuestions = selectRandomQuestions(partCQuestions);
+            break;
+        case 'D':
+            selectedQuestions = selectRandomQuestions(partDQuestions);
+            break;
+        default:
+            // Handle default case
+            break;
+    }
+
+    // Store the selected questions in localStorage to access them on the Ability.html page
+    localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions));
+
+    // Redirect the user to Ability.html
+    window.location.href = 'Ability.html';
+}
+
+// Function to select a random subset of questions from an array
+function selectRandomQuestions(questionsArray) {
+    const numQuestionsToShow = 100; // Number of questions to show
+    const shuffledQuestions = questionsArray.sort(() => 0.5 - Math.random()); // Shuffle the array
+    return shuffledQuestions.slice(0, numQuestionsToShow); // Get selected questions
+}
+
+</script>
+</body>
+</html>
